@@ -1,0 +1,58 @@
+name: Relay - GitHub Actions Vercel Deployment
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_RELAY }}
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**'
+      #- .github/workflows/relay.yml
+jobs:
+  Deploy-Production:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Vercel CLI
+        run: | 
+          npm install --global vercel@canary
+          # npm install --global yarn
+          npm install -g pnpm
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        id: build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Project Artifacts to Vercel
+        id: deploy
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: "set result"
+        id: deploy-task-result
+        if: always()
+        run: |
+          if ${{ steps.build.outcome == 'success' && (steps.deploy.outcome == 'success' || steps.deploy.outcome == null) }}; then # Check both build and deploy
+            echo "deploy_result=success" >> "$GITHUB_OUTPUT"
+          else
+            echo "deploy_result=failure" >> "$GITHUB_OUTPUT"
+          fi
+    outputs:
+      deploy_result: ${{ steps.deploy-task-result.outputs.deploy_result }}
+
+  noti-tele:
+    name: Notify Telegram
+    uses: "./.github/workflows/.telegram-noti.yml"
+    needs: Deploy-Production
+    if: |
+      always()
+    with:
+      main_job_name: Deploy-Production
+      results: Deploy ${{ needs.Deploy-Production.outputs.deploy_result }}
+      service_name: relay
+
+

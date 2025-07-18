@@ -1,0 +1,10 @@
+swagger:
+  enable: true
+  name: API
+  doc_url: /relaydocs
+  description: Backend
+  version: 1.0
+  is_auth: false
+  username: root
+  password: 123456
+  validatorUrl: none

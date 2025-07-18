@@ -1,0 +1,34 @@
+on:
+  workflow_call:
+    inputs:
+      main_job_name:
+        required: true
+        type: string
+      results:
+        required: true
+        type: string
+      service_name:
+        required: true
+        type: string
+      dev_id:
+        required: false
+        type: string
+        default: "U061KBS9HDK"
+jobs:
+  telegram_message:
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@master
+        with:
+          to: "-1002153951867"
+          token: "7211588737:AAG4i6-ONtvavy0P1e7Ob_zC9hSQnZzRISY"
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+            Repository: ${{ github.repository }}
+            Project: ${{ inputs.service_name }}"
+            GitHub Action build result: ${{ inputs.results }}
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+

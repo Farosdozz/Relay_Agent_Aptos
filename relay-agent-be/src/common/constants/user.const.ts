@@ -1,0 +1,4 @@
+export const USER_REF_CODE_REGEX = '^[A-Z0-9]{9}$';
+export const USER_NAME_REGEX = '^[a-z0-9]{3,25}$';
+export const REF_CODE_MAX_LENGTH = 9;
+export const REF_CODE_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

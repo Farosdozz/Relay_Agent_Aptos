@@ -1,0 +1,35 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "tsconfigRootDir": ".",
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint/eslint-plugin"],
+  "extends": [
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "root": true,
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "ignorePatterns": [],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "max-len": ["error", 150],
+    "import/no-unresolved": "off",
+    "no-useless-constructor": "off",
+    "import/extensions": "off",
+    "no-empty-function": "off",
+    "indent": ["error", 2],
+    "arrow-body-style": "off",
+    "class-methods-use-this": "off",
+    "no-underscore-dangle": "off",
+    "linebreak-style": ["error", "auto"]
+  }
+}

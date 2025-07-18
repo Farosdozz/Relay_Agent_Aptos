@@ -1,0 +1,3 @@
+packages:
+  - 'relay-agent-be'
+  - 'relay-agent-fe'
